@@ -41,15 +41,15 @@ export default class SearchPage extends Component {
 
 
     render() {
-        const sortByType = typeof this.state.pokemon[0][this.state.sortBy];
+        const sortOptions = typeof this.state.pokemon[0][this.state.sortBy];
         
         if(this.state.sortOrder === 'Ascending') {
-            if (sortByType === 'string') this.state.pokemon.sort((a, b) => a[this.state.sortBy].localeCompare(b[this.state.sortBy]));
-            if(sortByType === 'number') this.state.pokemon.sort((a, b) => a[this.state.sortBy] - b[this.state.sortBy]);
+            if (sortOptions === 'string') this.state.pokemon.sort((a, b) => a[this.state.sortBy].localeCompare(b[this.state.sortBy]));
+            if(sortOptions === 'number') this.state.pokemon.sort((a, b) => a[this.state.sortBy] - b[this.state.sortBy]);
         }
         else {
-            if (sortByType === 'string') this.state.pokemon.sort((a, b) => b[this.state.sortBy].localeCompare(a[this.state.sortBy]));
-            if(sortByType === 'number') this.state.pokemon.sort((a, b) => b[this.state.sortBy] - a[this.state.sortBy]);
+            if (sortOptions === 'string') this.state.pokemon.sort((a, b) => b[this.state.sortBy].localeCompare(a[this.state.sortBy]));
+            if(sortOptions === 'number') this.state.pokemon.sort((a, b) => b[this.state.sortBy] - a[this.state.sortBy]);
         }
     
         // pokemonData.sort((a, b) => a[this.state.sortBy].localeCompare(b[this.state.sortBy]));
