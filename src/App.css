@@ -1,13 +1,18 @@
-
+html {
+  background-color: crimson;
+}
 
 .pokeContainer {
   border: 1px solid black;
   width: 300px;
   margin: 5px;
+  background-color: rgb(255, 223, 43);
 }
 
 .bigContainer {
-  
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   display: flex;
   flex-wrap: wrap;
 }
@@ -19,9 +24,18 @@
   color: aquamarine;
 }
 
+.sortOrder {
+  border-radius: 5px;
+}
+
+.filterTypes {
+  border-radius: 5px;
+}
 
 input {
-  height: 100px;
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 10px;
 }
 
 .gridContainer {
