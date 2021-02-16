@@ -1,70 +1,82 @@
 import React, { Component } from 'react';
-import pokemonData from '../data.js';
 import PokeList from '../PokeList.js';
 import Input from '../Input.js';
-import FilterOptions from '../FilterOptions.js';
+import request from 'superagent';
+import SortOptions from '../SortOptions.js';
+
 
 
 export default class SearchPage extends Component {
     state = {
-        pokemon: pokemonData,
-        sortOrder: 'Ascending',
+        pokemon: [],
+        sortOrder: 'asc',
         sortBy: 'pokemon',
-        inputVal: ''
-
+        inputVal: '',
+        loading: false
     }
-      
     
+
+    componentDidMount = async () => {
+        await this.fetchPokemon();
+    }
     
-    handleSortBy = (e) => {
+    fetchPokemon = async () => {
+
+        this.setState({ loading: true})
+
+        const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?pokemon=${this.state.inputVal}&sort=${this.state.sortBy}&direction=${this.state.sortOrder}`)
+
+        await this.setState({
+            loading: false, 
+            pokemon: data.body.results,
+    })
+}
+
+    handleSortBy = async (e) => {
         this.setState({
             sortBy: e.target.value
         })
     }
 
 
-    handleInputValue = (e) => {
+    handleInputValue = async (e) => {
         this.setState({
             inputVal: e.target.value
         })
     }
 
-    handleSortOrder = (e) => {
+    handleSortOrder = async (e) => {
         this.setState({
             sortOrder: e.target.value
         })
-        console.log(this.sortOrder)
     }
 
 
-
-
+    handleClick = async () => {
+        await this.fetchPokemon();
+    }
 
     render() {
-        const sortByType = typeof this.state.pokemon[0][this.state.sortBy];
+        // const sortOptions = typeof this.state.pokemon[0][this.state.sortBy];
         
-        if(this.state.sortOrder === 'Ascending') {
-            if (sortByType === 'string') this.state.pokemon.sort((a, b) => a[this.state.sortBy].localeCompare(b[this.state.sortBy]));
-            if(sortByType === 'number') this.state.pokemon.sort((a, b) => a[this.state.sortBy] - b[this.state.sortBy]);
-        }
-        else {
-            if (sortByType === 'string') this.state.pokemon.sort((a, b) => b[this.state.sortBy].localeCompare(a[this.state.sortBy]));
-            if(sortByType === 'number') this.state.pokemon.sort((a, b) => b[this.state.sortBy] - a[this.state.sortBy]);
-        }
+        // if(this.state.sortOrder === 'Ascending') {
+        //     if(sortOptions === 'string') this.state.pokemon.sort((a, b) => a[this.state.sortBy].localeCompare(b[this.state.sortBy]));
+        //     if(sortOptions === 'number') this.state.pokemon.sort((a, b) => a[this.state.sortBy] - b[this.state.sortBy]);
+        // }
+        // else {
+        //     if(sortOptions === 'string') this.state.pokemon.sort((a, b) => b[this.state.sortBy].localeCompare(a[this.state.sortBy]));
+        //     if(sortOptions === 'number') this.state.pokemon.sort((a, b) => b[this.state.sortBy] - a[this.state.sortBy]);
+        // }
     
-        // pokemonData.sort((a, b) => a[this.state.sortBy].localeCompare(b[this.state.sortBy]));
-        const filteredPokemon = pokemonData.filter( pokemon => pokemon.pokemon.includes(this.state.inputVal))
+        // const filteredPokemon = pokemonData.filter( pokemon => pokemon.pokemon.includes(this.state.inputVal))
         
         return (
             <div>
                 <section>
-                    <FilterOptions handleSortBy={this.handleSortBy} handleSortOrder={this.handleSortOrder} />
+                    <SortOptions handleSortBy={this.handleSortBy} handleSortOrder={this.handleSortOrder} />
                 </section>
-                <Input handleInputValue={this.handleInputValue} sortBy={this.state.sortBy} /> 
-                <PokeList 
-                pokemonArray={filteredPokemon} 
-                
-                />
+                <Input handleInputValue={this.handleInputValue} sortBy={this.state.sortBy} handleClick={this.handleClick} /> 
+                <PokeList loading={this.state.loading} pokemonArray={this.state.pokemon} />
             </div>
         );
     }
