@@ -10,8 +10,8 @@ import HomePage from './homepage/HomePage.js';
 
 export default function App() {
   return (
-    <div>
-      <Router>
+    <Router>
+      <div>
         <Header />
         <Switch>
           <Route 
@@ -23,7 +23,7 @@ export default function App() {
           exact render={(routerProps) => <SearchPage {...routerProps} />}
           />
         </Switch>
-       </Router>
-    </div>
+      </div>
+    </Router>
   );
 }

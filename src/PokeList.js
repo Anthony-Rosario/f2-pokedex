@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PokeItems from './PokeItems.js';
+import Spinner from './Spinner.js';
 
 
 export default class PokeList extends Component {
@@ -9,7 +10,9 @@ export default class PokeList extends Component {
                 <section className="optionsContainer">
                 </section>
                 <section className="bigContainer">
-                {this.props.pokemonArray.map(pokemonObject => 
+                {this.props.loading 
+                ? <Spinner /> :
+                this.props.pokemonArray.map(pokemonObject => 
                 <PokeItems 
                     pokemon={pokemonObject.pokemon} 
                     pokemonImage={pokemonObject.url_image} 
