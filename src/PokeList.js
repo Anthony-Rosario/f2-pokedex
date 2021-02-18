@@ -10,6 +10,7 @@ export default class PokeList extends Component {
                 <section className="optionsContainer">
                 </section>
                 <section className="bigContainer">
+                    
                 {this.props.loading 
                 ? <Spinner /> :
                 this.props.pokemonArray.map(pokemonObject => 

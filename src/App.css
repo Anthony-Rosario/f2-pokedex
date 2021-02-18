@@ -1,12 +1,43 @@
 html {
   background-color: crimson;
+  background-image: url('');
 }
 
 .pokeContainer {
+  background-image: url('./assets/pokecardtemplate.png');
+  border-radius: 10px;
+  background-size: 303px 325px;
+  background-repeat: no-repeat;
   border: 1px solid black;
   width: 300px;
+  height: 325px;
   margin: 5px;
   background-color: rgb(255, 223, 43);
+  position: relative;
+}
+
+h2 {
+  position: absolute;
+  top: -18px;
+  left: 100px;
+}
+
+.attack {
+  position: absolute;
+  top: 190px;
+  left: 110px;
+}
+
+.type {
+  position: absolute;
+  top: 230px;
+  left: 110px;
+}
+
+.health {
+  position: absolute;
+  top: 272px;
+  left: 110px;
 }
 
 .bigContainer {
@@ -49,4 +80,7 @@ input {
 
 img {
   width: 40%;
+  position: absolute;
+  top: 40px;
+  left: 100px;
 }
