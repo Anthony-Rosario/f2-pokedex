@@ -12,23 +12,38 @@ export default class SearchPage extends Component {
         sortOrder: 'asc',
         sortBy: 'pokemon',
         inputVal: '',
-        loading: false
+        loading: false,
+        pokemonTotal: 0,
+        currentPage: 1,
+        perPage: 20,
     }
     
 
     componentDidMount = async () => {
         await this.fetchPokemon();
     }
+
     
+    componentDidUpdate = async (prevProps, prevState) => {
+        const oldPageNum = prevState.currentPage;
+        const newPageNum = this.state.currentPage;
+
+        if (oldPageNum !== newPageNum) {
+            await this.fetchPokemon();
+        }
+    }
+
+
     fetchPokemon = async () => {
 
         this.setState({ loading: true})
 
-        const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?pokemon=${this.state.inputVal}&sort=${this.state.sortBy}&direction=${this.state.sortOrder}`)
+        const data = await request.get(`https://pokedex-alchemy.herokuapp.com/api/pokedex?pokemon=${this.state.inputVal}&page=${this.state.currentPage}&sort=${this.state.sortBy}&direction=${this.state.sortOrder}`)
 
-        await this.setState({
+        this.setState({
             loading: false, 
             pokemon: data.body.results,
+            pokemonTotal: data.body.count,
     })
 }
 
@@ -53,7 +68,22 @@ export default class SearchPage extends Component {
 
 
     handleClick = async () => {
+        await this.setState({ currentPage: 1})
+
         await this.fetchPokemon();
+    }
+
+
+    handleNextPage = async () => {
+        this.setState({
+            currentPage: this.state.currentPage + 1
+        })
+    }
+
+    handlePreviousPage = async () => {
+        this.setState({
+            currentPage: this.state.currentPage - 1
+        })
     }
 
     render() {
@@ -69,9 +99,13 @@ export default class SearchPage extends Component {
         // }
     
         // const filteredPokemon = pokemonData.filter( pokemon => pokemon.pokemon.includes(this.state.inputVal))
-        
+        const lastPage = Math.ceil(this.state.totalPokemon / this.state.perPage);
+
         return (
             <div>
+                <button disabled={this.state.currentPage === 1} onClick={this.handlePreviousPage}>Last</button>
+                <h3>Page {this.state.currentPage}</h3>
+                <button disabled={this.state.currentPage === lastPage} onClick={this.handleNextPage}>Next</button>
                 <section>
                     <SortOptions handleSortBy={this.handleSortBy} handleSortOrder={this.handleSortOrder} />
                 </section>
